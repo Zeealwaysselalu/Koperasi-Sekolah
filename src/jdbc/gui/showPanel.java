@@ -1,4 +1,4 @@
-package jdbc;
+package jdbc.gui;
 
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;

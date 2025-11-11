@@ -1,5 +1,6 @@
-package jdbc;
+package jdbc.Inheritance;
 
+import jdbc.*;
 import java.util.Scanner;
 
 public class CobaJDBC extends inheritance {

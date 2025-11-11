@@ -1,14 +1,15 @@
-package jdbc;
+package jdbc.gui;
 
+import jdbc.*;
 import java.sql.*;
 import javax.swing.JOptionPane;
 
-public class SignUp extends javax.swing.JFrame {
+public class InputFrame extends javax.swing.JFrame {
 
     private Connection conn;
     private Statement state;
 
-    public SignUp() {
+    public InputFrame() {
         try {
             conn = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/jdbc",
@@ -39,7 +40,7 @@ public class SignUp extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         label = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
-        inputpass = new javax.swing.JTextField();
+        boxkl = new javax.swing.JComboBox<String>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,9 +52,9 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel1.setText("Nama");
 
-        jLabel2.setText("Password");
+        jLabel2.setText("Kelamin (L/P)");
 
-        jButton1.setText("Sign In");
+        jButton1.setText("Input");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -61,7 +62,7 @@ public class SignUp extends javax.swing.JFrame {
         });
 
         label.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        label.setText("Daftar");
+        label.setText("Ceritanya Input Data");
 
         javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
         jLayeredPane1.setLayout(jLayeredPane1Layout);
@@ -74,9 +75,10 @@ public class SignUp extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        inputpass.addActionListener(new java.awt.event.ActionListener() {
+        boxkl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masukkan Jenis Kelamin", "Laki - Laki", "Perempuan" }));
+        boxkl.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputpassActionPerformed(evt);
+                boxklActionPerformed(evt);
             }
         });
 
@@ -92,17 +94,18 @@ public class SignUp extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel2)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(238, 238, 238)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(inputnm, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(inputpass, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(139, 139, 139)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(98, 98, 98)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(boxkl, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(inputnm, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(label)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(195, 195, 195)
-                        .addComponent(label))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
+                        .addGap(175, 175, 175)
                         .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -123,11 +126,11 @@ public class SignUp extends javax.swing.JFrame {
                                 .addComponent(jLabel2))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(inputpass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(boxkl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addGap(66, 66, 66))
         );
 
         pack();
@@ -138,26 +141,29 @@ public class SignUp extends javax.swing.JFrame {
     }//GEN-LAST:event_inputnmActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String password = inputpass.getText();
+        String kelamin = (String) boxkl.getSelectedItem();
         String nama = inputnm.getText();
         try {
-            String sql = "INSERT INTO User VALUES ('" + nama + "', '" + password + "')";
-            int rows = state.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null,"Data berhasil disimpan!");
+            String user = new Login().getUser();
+            String sql = "INSERT INTO Nama (nama, kelamin, username) VALUES ( ?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, nama);
+            ps.setString(2, kelamin);
+            ps.setString(3, user);
+            int rows = ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Data berhasil disimpan!");
             System.out.println(rows + " data berhasil ditambahkan.");
-            new Login().setVisible(true);
-            dispose();
-            
+            inputnm.setText("");
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"Error! Alasan" + e);
+            JOptionPane.showMessageDialog(null, "Error! Alasan" + e);
             System.out.println("Insert gagal!");
             System.out.println("Alasan: " + e);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void inputpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputpassActionPerformed
+    private void boxklActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boxklActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_inputpassActionPerformed
+    }//GEN-LAST:event_boxklActionPerformed
 
     /**
      * @param args the command line arguments
@@ -176,13 +182,13 @@ public class SignUp extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InputFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InputFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InputFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SignUp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InputFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -190,14 +196,14 @@ public class SignUp extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SignUp().setVisible(true);
+                new InputFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> boxkl;
     private javax.swing.JTextField inputnm;
-    private javax.swing.JTextField inputpass;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

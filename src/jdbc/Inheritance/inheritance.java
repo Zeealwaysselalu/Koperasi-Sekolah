@@ -1,5 +1,6 @@
-package jdbc;
+package jdbc.Inheritance;
 
+import jdbc.*;
 import java.sql.*;
 
 public class inheritance {

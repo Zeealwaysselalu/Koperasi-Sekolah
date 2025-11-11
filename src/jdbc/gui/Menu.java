@@ -12,10 +12,15 @@ import jdbc.*;
  * @author USER
  */
 public class Menu extends javax.swing.JFrame {
-
+    private String currentUser;
     /**
      * Creates new form Menu
      */
+    public Menu(String username) {
+        this.currentUser = username;
+        initComponents();
+    }
+    
     public Menu() {
         initComponents();
     }
@@ -73,12 +78,12 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        new showPanel().setVisible(true);
+        new showPanel(currentUser).setVisible(true);
                 dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      new InputFrame().setVisible(true);
+      new InputFrame(currentUser).setVisible(true);
                 dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 

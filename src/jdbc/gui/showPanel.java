@@ -7,6 +7,24 @@ public class showPanel extends javax.swing.JFrame {
 
     private Connection conn;
     private Statement state;
+    private String currentUser;
+    
+    public showPanel(String username) {
+        this.currentUser = username;
+         try {
+            conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/jdbc",
+                    "root",
+                    ""
+            );
+            state = conn.createStatement();
+            System.out.println("Koneksi Berhasil!");
+        } catch (SQLException e) {
+            System.out.println("Koneksi Gagal!");
+            System.out.println("Alasan: " + e);
+        }
+        initComponents();
+    }
     
 
     public showPanel() {
@@ -32,7 +50,7 @@ public class showPanel extends javax.swing.JFrame {
             String user = new Login().getUser();
             String sql = ("SELECT id, nama, kelamin FROM Nama where username = ?");
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, user);
+            ps.setString(1, currentUser);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) { // loop semua baris
                 int id = rs.getInt("id");

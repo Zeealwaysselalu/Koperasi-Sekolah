@@ -151,7 +151,7 @@ public class Login extends javax.swing.JFrame {
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "Login berhasil!");
                 getUser();
-                new Menu().setVisible(true);
+                new Menu(username).setVisible(true);
                 dispose();
                 System.out.println("Login Berhasil! User : " + username);
             } else {

@@ -8,6 +8,24 @@ public class InputFrame extends javax.swing.JFrame {
 
     private Connection conn;
     private Statement state;
+    private String currentUser;
+    
+    public InputFrame(String username) {
+        this.currentUser = username;
+         try {
+            conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/jdbc",
+                    "root",
+                    ""
+            );
+            state = conn.createStatement();
+            System.out.println("Koneksi Berhasil!");
+        } catch (SQLException e) {
+            System.out.println("Koneksi Gagal!");
+            System.out.println("Alasan: " + e);
+        }
+        initComponents();
+    }
 
     public InputFrame() {
         try {
@@ -144,12 +162,11 @@ public class InputFrame extends javax.swing.JFrame {
         String kelamin = (String) boxkl.getSelectedItem();
         String nama = inputnm.getText();
         try {
-            String user = new Login().getUser();
             String sql = "INSERT INTO Nama (nama, kelamin, username) VALUES ( ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, nama);
             ps.setString(2, kelamin);
-            ps.setString(3, user);
+            ps.setString(3, currentUser);
             int rows = ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data berhasil disimpan!");
             System.out.println(rows + " data berhasil ditambahkan.");

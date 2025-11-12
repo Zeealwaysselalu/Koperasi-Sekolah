@@ -8,26 +8,9 @@ public class showPanel extends javax.swing.JFrame {
     private Connection conn;
     private Statement state;
     private String currentUser;
-    
+
     public showPanel(String username) {
         this.currentUser = username;
-         try {
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/jdbc",
-                    "root",
-                    ""
-            );
-            state = conn.createStatement();
-            System.out.println("Koneksi Berhasil!");
-        } catch (SQLException e) {
-            System.out.println("Koneksi Gagal!");
-            System.out.println("Alasan: " + e);
-        }
-        initComponents();
-    }
-    
-
-    public showPanel() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Nama");
@@ -47,7 +30,6 @@ public class showPanel extends javax.swing.JFrame {
             System.out.println("Alasan: " + e);
         }
         try {
-            String user = new Login().getUser();
             String sql = ("SELECT id, nama, kelamin FROM Nama where username = ?");
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, currentUser);
@@ -58,8 +40,7 @@ public class showPanel extends javax.swing.JFrame {
                 model.addRow(new Object[]{
                     rs.getInt("id"),
                     rs.getString("nama"),
-                    rs.getString("kelamin"),
-                });
+                    rs.getString("kelamin"),});
             }
 
             // Tutup resource
@@ -84,6 +65,7 @@ public class showPanel extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tableView = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -95,6 +77,13 @@ public class showPanel extends javax.swing.JFrame {
         tableView.setVerifyInputWhenFocusTarget(false);
         jScrollPane1.setViewportView(tableView);
 
+        jButton1.setText("Back");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,17 +92,28 @@ public class showPanel extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(86, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       new Menu(currentUser).setVisible(true);
+       dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,12 +145,12 @@ public class showPanel extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new showPanel().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableView;
     // End of variables declaration//GEN-END:variables

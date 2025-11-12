@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 public class InputFrame extends javax.swing.JFrame {
 
     private Connection conn;
-    private Statement state;
     private String currentUser;
     
     public InputFrame(String username) {
@@ -18,7 +17,6 @@ public class InputFrame extends javax.swing.JFrame {
                     "root",
                     ""
             );
-            state = conn.createStatement();
             System.out.println("Koneksi Berhasil!");
         } catch (SQLException e) {
             System.out.println("Koneksi Gagal!");
@@ -26,23 +24,6 @@ public class InputFrame extends javax.swing.JFrame {
         }
         initComponents();
     }
-
-    public InputFrame() {
-        try {
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/jdbc",
-                    "root",
-                    ""
-            );
-            state = conn.createStatement();
-            System.out.println("Koneksi Berhasil!");
-        } catch (SQLException e) {
-            System.out.println("Koneksi Gagal!");
-            System.out.println("Alasan: " + e);
-        }
-        initComponents();
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,6 +40,7 @@ public class InputFrame extends javax.swing.JFrame {
         label = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
         boxkl = new javax.swing.JComboBox<String>();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,6 +82,13 @@ public class InputFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Back");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,6 +115,10 @@ public class InputFrame extends javax.swing.JFrame {
                         .addGap(175, 175, 175)
                         .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,7 +141,9 @@ public class InputFrame extends javax.swing.JFrame {
                     .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(66, 66, 66))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -182,6 +177,11 @@ public class InputFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_boxklActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       new Menu(currentUser).setVisible(true);
+       dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -213,7 +213,6 @@ public class InputFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new InputFrame().setVisible(true);
             }
         });
     }
@@ -222,6 +221,7 @@ public class InputFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> boxkl;
     private javax.swing.JTextField inputnm;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLayeredPane jLayeredPane1;
